@@ -1,0 +1,169 @@
+swagger: "2.0"
+info:
+  description: "botchies API"
+  version: "1.0.0"
+  title: "Swagger Petstore"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "{app_name}.herokuapp.com"
+
+tags:
+- name: "wakeUpCall"
+  description: ""
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+schemes:
+- "https"
+paths:
+  /show_timeline:
+    get:
+      tags:
+      - "wakeUpCall"
+      summary: ""
+      description: ""
+      operationId: "show_timeline"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "success. the form of time_schedule is 'hh:mm'."
+          schema:
+            $ref: "#/definitions/Peer"
+        "400":
+          description: "invalid request"
+        "500":
+          description: "server error"
+      security:
+      - petstore_auth:
+        - "write:shige"
+        - "read:shige"
+  /reserve:
+    post:
+      tags:
+      - "wakeUpCall"
+      summary: ""
+      description: ""
+      operationId: "reserve"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "the form of time_schedule is 'yyyy-mm-dd hh:mm:ss'."
+        required: true
+        schema:
+          $ref: "#/definitions/Peer"
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "invalid request"
+        "500":
+          description: "server error"
+      security:
+      - petstore_auth:
+        - "write:shige"
+        - "read:shige"
+  /check_status/{peer_id}:
+    get:
+      tags:
+      - "wakeUpCall"
+      summary: "check status"
+      description: ""
+      operationId: "check_status"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "peer_id"
+        in: "path"
+        description: ""
+        required: true
+        type: "string"
+        format: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Status"
+        "400":
+          description: "invalid request"
+        "500":
+          description: "server error"
+      security:
+      - petstore_auth:
+        - "write:shige"
+        - "read:shige"
+  /incoming:
+    patch:
+      tags:
+      - "wakeUpCall"
+      summary: ""
+      description: ""
+      operationId: "incoming"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/Peerid"
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "invalid request"
+        "500":
+          description: "server error"
+      security:
+      - petstore_auth:
+        - "write:shige"
+        - "read:shige"
+  
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:shige: "modify pets in your account"
+      read:shige: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Peer:
+    type: "object"
+    properties:
+      peer_id:
+        type: "string"
+        format: "string"
+      time_schedule:
+        type: "string"
+        format: "string"
+      comment:
+        type: "string"
+        format: "string"
+      isWaiting:
+        type: "boolean"
+        default: true
+  Status:
+    type: "object"
+    properties:
+      isWaiting:
+        type: "boolean"
+        default: true
+  Peerid:
+    type: "object"
+    properties:
+      peer_id:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
